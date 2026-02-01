@@ -1,0 +1,32 @@
+services:
+  isaac:
+    build:
+      context: ..                # build context is parent folder
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        WORKSPACE: ${WORKSPACE:-/workspace}
+    container_name: isaac
+    # user: ros
+    network_mode: host
+    privileged: true
+    ipc: host
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      DISPLAY: ${DISPLAY}
+      WAYLAND_DISPLAY: ${WAYLAND_DISPLAY}
+      XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR}
+      PULSE_SERVER: ${PULSE_SERVER}
+      LIBGL_ALWAYS_SOFTWARE: "1"
+    volumes:
+      - /dev/input:/dev/input # This is only required to recognise the joystick if it is turned on after the container started
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      - ../:/workspace:cached 
+    # stdin_open: true
+    # tty: true
+    command: bash # /workspace/entrypoint.sh
+    restart: always
