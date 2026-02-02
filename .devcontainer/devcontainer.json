@@ -1,21 +1,28 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"dockerFile": "Dockerfile",
 	"build": {
-		"args": {
-			"WORKSPACE": "${containerWorkspaceFolder}"
-		}
-	},
-	// "remoteUser": "ros",
+			"dockerfile": "Dockerfile",
+			"context": "..",
+			"args": {
+				"WORKSPACE": "${containerWorkspaceFolder}"
+				}
+		},
+	"remoteUser": "ros",
 	"runArgs": [
 		"--network=host",
 		"--cap-add=SYS_PTRACE",
+		"--cap-add=SYS_RAWIO",  
 		"--security-opt=seccomp:unconfined",
 		"--security-opt=apparmor:unconfined",
 		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
 		"--volume=/mnt/wslg:/mnt/wslg",
 		"--ipc=host",
-		"--privileged"
+		"--privileged",
+		"--runtime=nvidia",
+		"--volume=/dev:/dev",
+		"--device=/dev/bus/usb:/dev/bus/usb",  // Pass all USB devices into container
+        	"--group-add=video"                    // Give container access to /dev/video* devices
+
 		// uncomment to use intel iGPU
 		// "--device=/dev/dri"
 	],
@@ -25,7 +32,8 @@
 		"XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
 		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
 		"LIBGL_ALWAYS_SOFTWARE": "1", // Needed for software rendering of opengl
-		"RMW_IMPLEMENTATION": "rmw_cyclonedds_cpp"
+		// "RMW_IMPLEMENTATION": "rmw_cyclonedds_cpp"
+		// "PATH": "/usr/local/bin:${containerEnv:PATH}"
 	},
 	// Set *default* container specific settings.json values on container create.
 	"customizations": {
