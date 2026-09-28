@@ -31,8 +31,7 @@
 		"WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
 		"XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
 		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
-		"LIBGL_ALWAYS_SOFTWARE": "1", // Needed for software rendering of opengl
-		// "RMW_IMPLEMENTATION": "rmw_cyclonedds_cpp"
+		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
 		// "PATH": "/usr/local/bin:${containerEnv:PATH}"
 	},
 	// Set *default* container specific settings.json values on container create.
